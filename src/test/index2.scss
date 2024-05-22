@@ -1,0 +1,29 @@
+.login{
+    width: 100 vw;
+    height: 100vh;
+
+    .login__background{
+        img{
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .login__wrapper{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    button{
+        width:100%;
+    }
+    .login__form{
+        button{
+            width:100%;
+        }
+    }
+    .login__google{
+        display:flex;
+    }
+}
