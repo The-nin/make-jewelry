@@ -2,6 +2,10 @@ import { Button, Col, Form, Input, Row } from "antd";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../config/firebase";
 import "./index2.scss";
+import { useNavigate } from "react-router-dom";
+import api from "../config/anxios";
+import { toast } from "react-toastify";
+
 function Test() {
   const handleLoginGoogle = () => {
     signInWithPopup(auth, new GoogleAuthProvider())
@@ -17,6 +21,20 @@ function Test() {
         console.log(errorMessage);
       });
   };
+
+  const navigate = useNavigate();
+  async function handleLogin(values) {
+    console.log(values);
+    try {
+      console.log(values);
+      const response = await api.post("/login", values);
+      console.log(response);
+      toast.success("Login successfully");
+      navigate("/login");
+    } catch (error) {
+      toast.error(error.response.data);
+    }
+  }
   return (
     <Row className="login">
       <Col span={16} className="login__background">
@@ -31,8 +49,9 @@ function Test() {
           labelCol={{
             span: 24,
           }}
+          onFinish={handleLogin}
         >
-          <Form.Item label="Username" name="username">
+          <Form.Item label="Username" name="phone">
             <Input />
           </Form.Item>
 
@@ -40,7 +59,9 @@ function Test() {
             <Input.Password />
           </Form.Item>
 
-          <Button type="primary">Login</Button>
+          <Button htmlType="submit" type="primary">
+            Login
+          </Button>
         </Form>
         <button className="login__google" onClick={handleLoginGoogle}>
           <img
