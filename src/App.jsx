@@ -1,10 +1,11 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 // import Login from "./Login";
-import Test from "./test";
 import Register from "./Register";
-import ForgotPassword from "./ForgotPassword";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import Test from "./test";
+import ChangePassword from "./ForgotPassword";
+import ResetPassword from "./ForgotPassword/message";
 
 function App() {
   const router = createBrowserRouter([
@@ -22,14 +23,18 @@ function App() {
     },
     {
       path: "/forgot-password",
-      element: <ForgotPassword />,
+      element: <ResetPassword />,
+    },
+    {
+      path: "/change-password",
+      element: <ChangePassword />,
     },
   ]);
 
   return (
     <>
       <ToastContainer />
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </>
   );
 }
