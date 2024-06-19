@@ -7,30 +7,43 @@ import {
 import { auth } from "../config/firebase";
 import "./index2.scss";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../config/anxios";
+import api from "../config/axios";
 import { toast } from "react-toastify";
+import { LockOutlined, PhoneOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { login, logout } from "../redux/features/counterSlice";
 
 // import { useDispatch, useSelector } from "react-redux";
 // import { selectUser } from "../redux/features/counterSlice";
 // import { buildErrorMessage } from "vite";
 
 function Test() {
-  const handleLoginGoogle = () => {
-    signInWithPopup(auth, new GoogleAuthProvider())
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        // const token = credential.accessToken;
-        console.log(credential);
-        console.log(result);
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        console.log(errorMessage);
+  const dispatch = useDispatch();
+
+  const handleLoginGoogle = async () => {
+    const result = await signInWithPopup(auth, new GoogleAuthProvider());
+    const token = result.user.accessToken;
+    try {
+      const response = await api.post("/login-google", {
+        token: token,
       });
+      console.log(response.data);
+      dispatch(login(response.data));
+      localStorage.setItem("token", response.data.token);
+      toast.success("Login successfully");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
   // //su dung, cap nhat user
   // const dispatch = useDispatch();
+
+  // save data user into redux
+  // dispatch(login(response.data))
+
+  //delete data user out of redux when log out
+  // dispatch(logout())
 
   // //lay user ra tu redux
   // const user = useSelector(selectUser);
@@ -41,9 +54,11 @@ function Test() {
     try {
       console.log(values);
       const response = await api.post("/login", values);
-      console.log(response);
+      console.log(response.data);
+      dispatch(login(response.data));
+      localStorage.setItem("token", response.data.token);
       toast.success("Login successfully");
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       toast.error(error.response.data);
     }
@@ -125,16 +140,19 @@ function Test() {
             >
               <h1 className="header">Sign in</h1>
               <Form.Item name="phone">
-                <Input placeholder="Phone number" />
+                <Input placeholder="Phone number" prefix={<PhoneOutlined />} />
               </Form.Item>
 
               <Form.Item name="password">
                 <Input.Password
                   placeholder="Password"
                   required
+                  prefix={<LockOutlined />}
                 ></Input.Password>
               </Form.Item>
+
               <Link to="/forgot-password">Forgot password?</Link>
+
               <div className="button">
                 <Button
                   htmlType="submit"

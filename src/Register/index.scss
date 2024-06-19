@@ -21,16 +21,18 @@
         flex-direction: column;
         justify-content: center;
         width: 100%;
+        
     }
     
     .header{
         display:flex;
         flex-direction: column;
         align-items: center;
-        gap: 9px;
         width: 100%;
-        color: rgb(28, 28, 29);
-        padding-bottom: 10px;
+        // color: rgb(25, 25, 26);
+        padding-bottom: 10px;  
+        box-shadow: none;  
+        background: none;
     }
     
 }

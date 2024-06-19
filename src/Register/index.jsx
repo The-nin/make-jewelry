@@ -1,13 +1,15 @@
 import { Button, DatePicker, Form, Input, Row, Select } from "antd";
-import api from "../config/anxios";
+import api from "../config/axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "./index.scss";
+import moment from "moment";
 
 function Register() {
   const navigate = useNavigate();
   async function handleRegister(values) {
     try {
+      values.dob = moment(values.dob).format("DD-MM-YYYY");
       console.log(values);
       const response = await api.post("/register", values);
       console.log(response);
@@ -75,11 +77,12 @@ function Register() {
           </Form.Item>
 
           <Form.Item label="Date of Birth" name="dob">
-            <DatePicker
+            <Input
               picker="date"
               style={{ width: "100%" }}
-              placeholder="Choose date of birth"
-            ></DatePicker>
+              placeholder="DD-MM-YYYY"
+              format="DD-MM-YYYY"
+            ></Input>
           </Form.Item>
 
           <Button block htmlType="submit" type="primary">
