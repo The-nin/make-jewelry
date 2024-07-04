@@ -1,342 +1,174 @@
-// //import React from 'react';
-// import PropTypes from "prop-types";
-// // import "./Navbar.scss";
-// import "./index.scss";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import {
-//   faSignOutAlt,
-//   faShoppingCart,
-//   faSearch,
-//   faUser,
-// } from "@fortawesome/free-solid-svg-icons";
-// import Slider from "react-slick";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
-
-// function Navbar() {
-//   const PrevArrow = ({ className, style, onClick }) => {
-//     return (
-//       <button
-//         className={`${className} custom-prev-arrow`}
-//         style={{ ...style, left: "50px" }}
-//         onClick={onClick}
-//       >
-//         Pre
-//       </button>
-//     );
-//   };
-
-//   PrevArrow.propTypes = {
-//     className: PropTypes.string,
-//     style: PropTypes.object,
-//     onClick: PropTypes.func,
-//   };
-
-//   const NextArrow = ({ className, style, onClick }) => {
-//     return (
-//       <button
-//         className={`${className} custom-next-arrow`}
-//         style={{ ...style, right: "50px" }}
-//         onClick={onClick}
-//       >
-//         Next
-//       </button>
-//     );
-//   };
-
-//   NextArrow.propTypes = {
-//     className: PropTypes.string,
-//     style: PropTypes.object,
-//     onClick: PropTypes.func,
-//   };
-
-//   const settings = {
-//     dots: true,
-//     infinite: true,
-//     speed: 500,
-//     slidesToShow: 1,
-//     slidesToScroll: 1,
-//     autoplay: true,
-//     autoplaySpeed: 5000,
-//     prevArrow: <PrevArrow />,
-//     nextArrow: <NextArrow />,
-//   };
-
-//   return (
-//     <div>
-//       <nav className="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-lg">
-//         <div className="container">
-//           <a className="navbar-brand fw-bold fs-4" href="#">
-//             Happy Golden
-//           </a>
-//           <button
-//             className="navbar-toggler"
-//             type="button"
-//             data-bs-toggle="collapse"
-//             data-bs-target="#navbarSupportedContent"
-//             aria-controls="navbarSupportedContent"
-//             aria-expanded="false"
-//             aria-label="Toggle navigation"
-//           >
-//             <span className="navbar-toggler-icon"></span>
-//           </button>
-//           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-//             <ul className="navbar-nav mx-auto mb-3 mb-lg-0">
-//               <li className="nav-item">
-//                 <a className="nav-link home" aria-current="page" href="#">
-//                   Home
-//                 </a>
-//               </li>
-//               <li className="nav-item">
-//                 <a className="nav-link" href="#">
-//                   Category
-//                 </a>
-//               </li>
-//               <li className="nav-item">
-//                 <a className="nav-link" href="#">
-//                   Product
-//                 </a>
-//               </li>
-//               <li className="nav-item">
-//                 <a className="nav-link" href="#">
-//                   Contact
-//                 </a>
-//               </li>
-//               <li className="nav-item">
-//                 <a className="nav-link" href="#">
-//                   Blog
-//                 </a>
-//               </li>
-//             </ul>
-//             <form className="d-flex">
-//               <div className="input-group">
-//                 <input
-//                   className="form-control"
-//                   type="search"
-//                   placeholder="Search"
-//                   aria-label="Search"
-//                 />
-//                 <button className="btn btn-outline-dark" type="submit">
-//                   <FontAwesomeIcon icon={faSearch} />
-//                 </button>
-//               </div>
-//             </form>
-//             <div className="buttons ms-2">
-//               <a href="#" className="btn btn-outline-dark me-1">
-//                 <FontAwesomeIcon icon={faSignOutAlt} /> Logout
-//               </a>
-//               <a href="#" className="btn btn-outline-dark ms-1">
-//                 <FontAwesomeIcon icon={faShoppingCart} /> Cart (0)
-//               </a>
-//               <a href="#" className="btn btn-outline-dark ms-2">
-//                 <FontAwesomeIcon icon={faUser} /> My Account
-//               </a>
-//             </div>
-//           </div>
-//         </div>
-//       </nav>
-//       <Slider className="slider-container" {...settings}>
-//         <div>
-//           <img
-//             src="/Public/bg.jpg"
-//             className="img-fluid full-screen-img"
-//             alt="Description of the image"
-//           />
-//         </div>
-//         <div>
-//           <img
-//             src="/Public/bg2.jpg"
-//             className="img-fluid full-screen-img"
-//             alt="Description of the image"
-//           />
-//         </div>
-//         <div>
-//           <img
-//             src="/Public/bg3.jpg"
-//             className="img-fluid full-screen-img"
-//             alt="Description of the image"
-//           />
-//         </div>
-//       </Slider>
-//     </div>
-//   );
-// }
-
-// export default Navbar;
-
-import React from "react";
-import PropTypes from "prop-types";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSignOutAlt,
-  faShoppingCart,
-  faSearch,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { Layout, Menu, Input, Button, Row, Col } from "antd";
-import "./index.scss";
-
+import React, { useState } from "react";
+import { Layout, Menu, Input, Button, Dropdown, Col, Row } from "antd";
+import SearchOutlined from "@ant-design/icons/SearchOutlined";
+import ShoppingCartOutlined from "@ant-design/icons/ShoppingCartOutlined";
+import UserOutlined from "@ant-design/icons/UserOutlined";
+import LoginOutlined from "@ant-design/icons/LoginOutlined";
+import "./Navbar.scss";
+import { Link, useNavigate } from "react-router-dom";
+import { logout, selectUser } from "../../redux/features/counterSlice";
+import { useDispatch, useSelector } from "react-redux";
+import MenuItem from "antd/es/menu/MenuItem";
 const { Header } = Layout;
-const { Search } = Input;
 
-function Navbar() {
-  const PrevArrow = ({ className, style, onClick }) => {
-    return (
-      <button
-        className={`${className} custom-prev-arrow`}
-        style={{ ...style, left: "50px" }}
-        onClick={onClick}
-      >
-        Pre
-      </button>
-    );
+const Navbar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  console.log(user);
+
+  const handleLogout = () => {
+    console.log(user);
+    dispatch(logout());
+    navigate("/login");
   };
 
-  PrevArrow.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    onClick: PropTypes.func,
-  };
-
-  const NextArrow = ({ className, style, onClick }) => {
-    return (
-      <button
-        className={`${className} custom-next-arrow`}
-        style={{ ...style, right: "50px" }}
-        onClick={onClick}
-      >
-        Next
-      </button>
-    );
-  };
-
-  NextArrow.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    onClick: PropTypes.func,
-  };
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    prevArrow: <PrevArrow />,
-    nextArrow: <NextArrow />,
-  };
+  const Menu1 = (
+    <Menu>
+      <Menu.Item key="profile" onClick={() => navigate("/profile")}>
+        Profile
+      </Menu.Item>
+      <Menu.Item key="history-order" onClick={() => navigate("/my-order")}>
+        My Order
+      </Menu.Item>
+      <Menu.Item key="logout" onClick={handleLogout}>
+        Logout
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <Layout className="layout">
-      <Header className="header">
-        <div className="container">
-          <Row justify="space-between" align="middle">
-            <Col>
-              <a className="navbar-brand" href="#">
-                Happy Golden
-              </a>
-            </Col>
-            <Col>
-              <Menu
-                mode="horizontal"
-                defaultSelectedKeys={["1"]}
-                className="navbar-nav menu"
-              >
-                <Menu.Item key="1">
-                  <a className="nav-link home" href="#">
-                    Home
-                  </a>
-                </Menu.Item>
-                <Menu.Item key="2">
-                  <a className="nav-link" href="#">
-                    Category
-                  </a>
-                </Menu.Item>
-                <Menu.Item key="3">
-                  <a className="nav-link" href="#">
-                    Product
-                  </a>
-                </Menu.Item>
-                <Menu.Item key="4">
-                  <a className="nav-link" href="#">
-                    Contact
-                  </a>
-                </Menu.Item>
-                <Menu.Item key="5">
-                  <a className="nav-link" href="#">
-                    Blog
-                  </a>
-                </Menu.Item>
-              </Menu>
-            </Col>
-            <Col>
-              <Search
-                placeholder="Search"
-                onSearch={(value) => console.log(value)}
-                style={{ width: 200 }}
-                enterButton={<FontAwesomeIcon icon={faSearch} />}
-              />
-            </Col>
-            <Col>
-              <div className="buttons">
-                <Button
-                  type="default"
-                  icon={<FontAwesomeIcon icon={faSignOutAlt} />}
-                  className="me-1"
-                >
-                  Logout
-                </Button>
-                <Button
-                  type="default"
-                  icon={<FontAwesomeIcon icon={faShoppingCart} />}
-                  className="ms-1"
-                >
-                  Cart (0)
-                </Button>
-                <Button
-                  type="default"
-                  icon={<FontAwesomeIcon icon={faUser} />}
-                  className="ms-2"
-                >
-                  My Account
-                </Button>
-              </div>
-            </Col>
-          </Row>
+      <Header className="navbar">
+        <div className="logo">Happy Golden</div>
+        <Menu
+          theme="light"
+          mode="horizontal"
+          defaultSelectedKeys={[""]}
+          className="menu"
+        >
+          <Menu.Item key="1" onClick={() => navigate("/")}>
+            Home
+          </Menu.Item>
+          <Menu.SubMenu
+            key="2"
+            title="Collection"
+            onTitleClick={() => navigate("/collections")}
+          >
+            <Menu.Item key="2-1">
+              <a href="#">Nhẫn</a>
+            </Menu.Item>
+            <Menu.Item key="2-2">
+              <a href="#">Dây Chuyền</a>
+            </Menu.Item>
+            <Menu.Item key="2-3">
+              <a href="#">Khuyên Tai</a>
+            </Menu.Item>
+            <Menu.Item key="2-4">
+              <a href="#">Vòng Tay</a>
+            </Menu.Item>
+          </Menu.SubMenu>
+
+          <Menu.SubMenu
+            key="3"
+            title="Booking"
+            onTitleClick={() => navigate("/booking")}
+          >
+            <Menu.Item key="3-1">
+              <a href="#">Gia Công Trang Sức</a>
+            </Menu.Item>
+            <Menu.Item key="3-2">
+              <a href="#">Khắc Chữ</a>
+            </Menu.Item>
+            <Menu.Item key="3-3">
+              <a href="#">Bảo Trì Và Làm Mới</a>
+            </Menu.Item>
+            <Menu.Item key="3-4">
+              <a href="#">Kiểm Định Tuổi Vàng</a>
+            </Menu.Item>
+          </Menu.SubMenu>
+
+          <Menu.SubMenu key="4" title="Chính Sách Và Hướng Dẫn">
+            <Menu.Item key="4-1">
+              <a href="#">Chính Sách Đặt Hàng</a>
+            </Menu.Item>
+            <Menu.Item key="4-2">
+              <a href="#">Chính Sách Thanh Toán</a>
+            </Menu.Item>
+            <Menu.Item key="4-3">
+              <a href="#">Chính Sách Giao Hàng, Kiểm Hàng</a>
+            </Menu.Item>
+            <Menu.Item key="4-4">
+              <a href="#">Chính Sách Bảo Mật</a>
+            </Menu.Item>
+            <Menu.Item key="4-5">
+              <a href="#">Hướng Dẫn Đặt Hàng</a>
+            </Menu.Item>
+            <Menu.Item key="4-6">
+              <a href="#">Hướng Dẫn Đo Size</a>
+            </Menu.Item>
+          </Menu.SubMenu>
+
+          <Menu.Item key="5">
+            <a href="#">Blog</a>
+          </Menu.Item>
+        </Menu>
+
+        <div className="navbar-actions">
+          <Input
+            className="search-input"
+            placeholder="Search"
+            prefix={<SearchOutlined />}
+          />
+
+          {user ? (
+            <Row xs={3} className="Header-login">
+              <Col>
+                <Button type="text" icon={<ShoppingCartOutlined />} />
+              </Col>
+
+              <Col>
+                <Dropdown overlay={Menu1} trigger={["hover"]}>
+                  <Button type="text" icon={<UserOutlined />} />
+                </Dropdown>
+              </Col>
+            </Row>
+          ) : (
+            <Row xs={3} className="Header-login">
+              <Link to={"/login"}>
+                <Button text={"Đăng nhập"}>Sign in</Button>
+              </Link>
+              <Link to={"/register"}>
+                <Button text={"Đăng ký"}>Sign up</Button>
+              </Link>
+            </Row>
+          )}
+
+          {/* {user ? (
+            <Row xs={3} className="Header-login">
+              <Link to={"/login"}>
+                <Button text={"Đăng nhập"}>Sign in</Button>
+              </Link>
+              <Link to={"/register"}>
+                <Button text={"Đăng ký"}>Sign up</Button>
+              </Link>
+            </Row>
+          ) : (
+            <Row xs={3} className="Header-login">
+              <Col>
+                <Button type="text" icon={<ShoppingCartOutlined />} />
+              </Col>
+              <Col>
+                <Dropdown overlay={Menu1} trigger={["hover"]}>
+                  <Button type="text" icon={<UserOutlined />} />
+                </Dropdown>
+              </Col>
+            </Row>
+          )} */}
         </div>
       </Header>
-      <div className="slider-container full-width-container">
-        <Slider {...settings}>
-          <div>
-            <img
-              src="/Public/bg.jpg"
-              className="img-fluid full-screen-img"
-              alt="Description of the image"
-            />
-          </div>
-          <div>
-            <img
-              src="/Public/bg2.jpg"
-              className="img-fluid full-screen-img"
-              alt="Description of the image"
-            />
-          </div>
-          <div>
-            <img
-              src="/Public/bg3.jpg"
-              className="img-fluid full-screen-img"
-              alt="Description of the image"
-            />
-          </div>
-        </Slider>
-      </div>
     </Layout>
   );
-}
+};
 
 export default Navbar;

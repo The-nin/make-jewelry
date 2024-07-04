@@ -1,15 +1,16 @@
 import { Button, DatePicker, Form, Input, Row, Select } from "antd";
 import api from "../config/axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./index.scss";
 import moment from "moment";
+import { LeftCircleOutlined } from "@ant-design/icons";
 
 function Register() {
   const navigate = useNavigate();
   async function handleRegister(values) {
     try {
-      values.dob = moment(values.dob).format("DD-MM-YYYY");
+      values.dob = moment(values.dob).format("YYYY-MM-DD");
       console.log(values);
       const response = await api.post("/register", values);
       console.log(response);
@@ -29,7 +30,15 @@ function Register() {
           wrapperCol={{ span: 14 }}
           onFinish={handleRegister}
         >
-          <h1 className="header">Sign up</h1>
+          <div className="header-container">
+            <Link to={"/login"}>
+              <i className="icon">
+                <LeftCircleOutlined />
+              </i>
+            </Link>
+            <h1 className="header">Sign up</h1>
+          </div>
+
           <Form.Item label="Phone" name="phone">
             <Input placeholder="Enter phone number" required />
           </Form.Item>
@@ -77,12 +86,12 @@ function Register() {
           </Form.Item>
 
           <Form.Item label="Date of Birth" name="dob">
-            <Input
+            <DatePicker
               picker="date"
+              placeholder="YYYY-MM-DD"
+              format="YYYY-MM-DD"
               style={{ width: "100%" }}
-              placeholder="DD-MM-YYYY"
-              format="DD-MM-YYYY"
-            ></Input>
+            ></DatePicker>
           </Form.Item>
 
           <Button block htmlType="submit" type="primary">

@@ -1,14 +1,24 @@
-import { Button, Form, Input, Modal, Table } from "antd";
+import { Button, Col, Form, Input, Modal, Row, Table } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import api from "../config/axios";
-import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 
 function AllAccount() {
+  const [form] = Form.useForm();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [accounts, setAccounts] = useState({});
+  const [title, setTitle] = useState("ADD NEW ACCOUNT");
 
   //state chua data
   const [data, setData] = useState([]);
+  const [searchText, setSearchText] = useState("");
+
   //function get data
   const fetchData = async () => {
     const response = await api.get("/list-account");
@@ -18,22 +28,32 @@ function AllAccount() {
   //chay moi khi laod trang web, []: chay 1 lan
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [isModalOpen]);
 
   const handleDelete = async (values) => {
     console.log(values);
     //call api disable account
     const response = await api.patch(`/disable-account/${values.id}`);
-    //loc ra all data, loai bo data vua bi xoa
-    setData(data.filter((data) => data.id != values.id));
+    fetchData();
   };
 
   const handleUpdate = async (values) => {
     console.log(values);
-    //call api update product
-    const response = await api.put(`/update-account/${values.id}`);
-    //loc ra all data, loai bo data vua bi xoa
-    setData(data.filter((data) => data.id != values.id));
+    setIsModalOpen(true);
+    setTitle("Update account");
+    form.setFieldsValue(values);
+    setAccounts(values);
+  };
+
+  const handleSearch = async (value) => {
+    console.log(value);
+    try {
+      const response = await api.get(`/search-account?param=${value}`);
+      console.log(response.data);
+      setData(response.data);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const columns = [
@@ -68,14 +88,30 @@ function AllAccount() {
       key: "email",
     },
     {
-      title: "Password",
-      dataIndex: "password",
-      key: "password",
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
     },
     {
       title: "Phone",
       dataIndex: "phone",
       key: "phone",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status) => {
+        return (
+          <span>
+            {status ? (
+              <CheckCircleOutlined style={{ color: "green" }} />
+            ) : (
+              <CloseCircleOutlined style={{ color: "red" }} />
+            )}
+          </span>
+        );
+      },
     },
     {
       title: "",
@@ -92,36 +128,76 @@ function AllAccount() {
       ),
     },
   ];
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
+
   const handleOk = () => {
     setIsModalOpen(false);
   };
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const onFinish = async (values) => {
-    console.log("Success:", values);
 
-    const response = await api.post("/admin-only", values);
-    // add xong -> render lai man hinh moi nhat thi state phai thay doi
-    setData([...data, response.data]);
-    setIsModalOpen(false);
-    console.log(response);
+  const showModal = () => {
+    setIsModalOpen(true);
+    form.resetFields();
+    setAccounts({});
+    setTitle("ADD NEW ACCOUNT");
   };
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
+  const onFinish = async (values) => {
+    console.log("Success:", values);
+    if (accounts.id == null) {
+      const response = await api.post("/admin-only", values);
+      // add xong -> render lai man hinh moi nhat thi state phai thay doi
+      setData([...data, response.data]);
+      setIsModalOpen(false);
+      console.log(response);
+    } else {
+      const response = await api.put(`/update-account/${accounts.id}`, {
+        status: accounts.status,
+        fullName: values.fullName,
+        birthday: values.birthday,
+        address: values.address,
+        gender: values.gender,
+        email: values.email,
+        phone: values.phone,
+        password: values.password,
+      });
+      setIsModalOpen(false);
+      console.log(response);
+    }
+  };
+
   return (
     <div>
-      <Button type="primary" onClick={showModal}>
-        Add new material
-      </Button>
+      <Row className="Modal-header" justify={"space-between"}>
+        <Col>
+          <Button type="primary" onClick={showModal}>
+            Add new account
+          </Button>
+        </Col>
+
+        <Col>
+          <div className="SearchBar" style={{ float: "right" }}>
+            <Input
+              placeholder="Search"
+              allowClear
+              onChange={(e) => setSearchText(e.target.value)}
+              onPressEnter={(e) => handleSearch(searchText, e)}
+              enterButton={<SearchOutlined />}
+              value={searchText}
+              suffix={<SearchOutlined />}
+            />
+          </div>
+        </Col>
+      </Row>
+
       <Modal
         footer={false}
-        title="ADD NEW ACCOUNT"
+        title={title}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -229,6 +305,19 @@ function AllAccount() {
               {
                 require: true,
                 message: "Please input phone!!!",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Role"
+            name="role"
+            rules={[
+              {
+                require: true,
+                message: "Please input account role!!!",
               },
             ]}
           >

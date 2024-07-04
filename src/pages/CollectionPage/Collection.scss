@@ -1,0 +1,31 @@
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    padding: 16px;
+    background-color: #f5e6f8;
+} 
+
+.product-card {
+    width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+  
+.product-image {
+    width: 100%;
+    height: auto;
+}
+  
+.product-info {
+    padding: 16px;
+    text-align: center;
+}
+  
+.product-info h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #000;
+} 

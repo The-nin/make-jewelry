@@ -1,63 +1,61 @@
-.full-width-container {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
+.layout {
+    background: #fff;
+    
   }
   
-  .navbar-nav {
-    a {
-      margin-right: 20px;
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 0 50px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      flex-shrink: 0;
     }
   
-    .nav-link {
-      position: relative;
-      text-decoration: none;
+    .menu {
+      flex: 1;
+      display: flex;
+      justify-content: center;
   
-      &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: -2px; // Điều chỉnh khoảng cách của đường line dưới chữ
-        width: 0; // Bắt đầu ẩn đường line
-        height: 2px;
-        background-color: rgb(199, 147, 186); // Màu của đường line
-        transition: width 0.3s ease; // Hiệu ứng chuyển động của đường line
+      .ant-menu-horizontal {
+        border-bottom: none;
       }
   
-      &:hover {
-        color: rgb(199, 147, 186); // Thay đổi màu chữ khi trỏ chuột vào
+      .ant-menu-item, .ant-menu-submenu-title {
+        padding: 0 20px;
+        text-decoration: none;
+        color: #333;
+        border-bottom: none !important;
   
-        &::after {
-          width: 100%; // Hiển thị đường line từ trái sang phải
+        &:hover {
+          color: #bb4289;
+          border-bottom: none !important;
+        }
+  
+        &:focus, &:active {
+          border-bottom: none !important;
+          color: #12bc6a;
         }
       }
+    }
   
-      &.home:hover {
-        color: rgb(199, 147, 186); // Thêm màu chữ cho Home khi trỏ chuột vào
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+  
+      .search-input {
+        margin-right: 20px;
+        width: 200px;
+      }
+  
+      .ant-btn {
+        margin-left: 10px;
       }
     }
-  }
-  
-  .full-screen-img {
-    flex-shrink: 0;
-    width: 100vw;
-    height: auto;
-    scroll-snap-align: start;
-  }
-  
-  .slider-container {
-    .slick-dots {
-      bottom: 25px;
-  
-      li button::before {
-        font-size: 16px;
-      }
-    }
-  
-    .slick-prev {
-      z-index: 1;
-    }
-  
-    justify-content: center;
   }
   

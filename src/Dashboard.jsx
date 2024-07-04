@@ -9,10 +9,14 @@ import {
   AppstoreAddOutlined,
   InboxOutlined,
   GoldOutlined,
+  ShoppingCartOutlined,
+  HistoryOutlined,
 } from "@ant-design/icons";
 import { Avatar, Breadcrumb, Layout, Menu, Space, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { selectUser } from "./redux/features/counterSlice";
+import { useSelector } from "react-redux";
 
 const { Header, Content, Sider } = Layout;
 
@@ -36,53 +40,55 @@ const Dashboard = () => {
   const location = useLocation();
   const currentURI =
     location.pathname.split("/")[location.pathname.split("/").length - 1];
-  const role = "admin";
+  const role = "ADMIN";
+  // const user = useSelector(selectUser);
 
   const dataOpen = JSON.parse(localStorage.getItem("keys")) ?? [];
 
   const [openKeys, setOpenKeys] = useState(dataOpen);
 
   useEffect(() => {
-    if (role === "manager") {
-      setItems([
-        getItem("Category", "category"),
-        getItem("Hồ sơ", "profile", <ProfileOutlined />),
-        getItem("Quản lý Clubs", "club", <HeartOutlined />, [
-          getItem("Club 1", "club1"),
-          getItem("Club 2", "club2"),
-          getItem("Club 3", "club3"),
-          getItem("All Promotion", "all-promotion"),
-        ]),
-        getItem("Quản lý Staffs", "staffs", <UserOutlined />, [
-          getItem("Club 1", "staff-club-1"),
-          getItem("Club 2", "staff-club-2"),
-          getItem("Club 3", "staff-club-3"),
-          getItem("All Staffs", "all-staffs"),
-        ]),
-      ]);
-    }
+    // if (role === "MANAGER") {
+    //   setItems([
+    //     getItem("Category", "category"),
+    //     getItem("Hồ sơ", "profile", <ProfileOutlined />),
+    //     getItem("Quản lý Clubs", "club", <HeartOutlined />, [
+    //       getItem("Club 1", "club1"),
+    //       getItem("Club 2", "club2"),
+    //       getItem("Club 3", "club3"),
+    //       getItem("All Promotion", "all-promotion"),
+    //     ]),
+    //     getItem("Quản lý Staffs", "staffs", <UserOutlined />, [
+    //       getItem("Club 1", "staff-club-1"),
+    //       getItem("Club 2", "staff-club-2"),
+    //       getItem("Club 3", "staff-club-3"),
+    //       getItem("All Staffs", "all-staffs"),
+    //     ]),
+    //   ]);
+    // }
 
-    if (role === "admin") {
+    if (role === "ADMIN") {
       setItems([
-        getItem("Category", "category", <AppstoreAddOutlined />),
-        getItem("Hồ sơ", "profile", <ProfileOutlined />),
-
         getItem("Accounts", "accounts", <TeamOutlined />, [
           getItem("All Staffs", "all-staffs"),
           getItem("Sale staff", "account-club-1"),
           getItem("Design staff", "account-club-2"),
           getItem("Production Staff", "account-club-3"),
-
           getItem("All Account", "all-account"),
         ]),
+
         getItem("Product", "product", <InboxOutlined />),
         getItem("Material", "material", <GoldOutlined />),
-
+        getItem("Stone", "stone", <GoldOutlined />),
+        getItem("Category", "category", <AppstoreAddOutlined />),
+        getItem("Order", "order", <ShoppingCartOutlined />, [
+          getItem("All of order ", "all-order"),
+          getItem("Assign Staff", "assign-order"),
+          getItem("Staff Task", "staff-task"),
+          getItem("Order Approval", "approve-order"),
+        ]),
         getItem("Thống kê", "statistics", <BarChartOutlined />, [
-          getItem("Club 1", "stats-club-1"),
-          getItem("Club 2", "stats-club-2"),
-          getItem("Club 3", "stats-club-3"),
-          getItem("All Clubs", "all-clubs"),
+          getItem("Graph", "graph"),
         ]),
       ]);
     }
@@ -168,7 +174,9 @@ const Dashboard = () => {
           </div>
         </Content>
         <Footer style={{ textAlign: "center", backgroundColor: "#E3F2EE" }}>
-          DATSAN79 ©{new Date().getFullYear()} Created by DEMI
+          Happy Golden
+          <br />
+          MAKE-JEWERLY79 ©{new Date().getFullYear()}
         </Footer>
       </Layout>
     </Layout>

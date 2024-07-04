@@ -1,7 +1,7 @@
 import { Button, Col, Form, Input, Modal, Row, Table } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import api from "./config/axios";
+import api from "../../config/axios";
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
@@ -9,12 +9,12 @@ import {
 } from "@ant-design/icons";
 // import Search from "antd/es/transfer/search";
 
-function Material() {
+function Stone() {
   const [form] = Form.useForm();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [material, setMaterial] = useState({});
-  const [title, setTitle] = useState("ADD NEW MATERIAL");
+  const [stone, setStone] = useState({});
+  const [title, setTitle] = useState("ADD NEW STONE");
 
   //state chua data
   const [data, setData] = useState([]);
@@ -23,20 +23,20 @@ function Material() {
 
   //function get data
   const fetchData = async () => {
-    const response = await api.get("/material");
+    const response = await api.get("/stone");
     console.log(response.data);
     setData(response.data);
     // setFilteredData(response.data);
   };
-  //chay moi khi load trang web, []: chay 1 lan, [isModalOpen]: chay moi khi open modal
+  //chay moi khi laod trang web, []: chay 1 lan
   useEffect(() => {
     fetchData();
   }, [isModalOpen]);
 
   const handleDisable = async (values) => {
     console.log(values);
-    //call api disable material
-    const response = await api.patch(`/material/${values.id}`);
+    //call api disable stone
+    const response = await api.patch(`/stone/${values.id}`);
     //loc ra all data, loai bo data vua bi xoa
     // setData(data.filter((data) => data.id != values.id));
     fetchData();
@@ -44,15 +44,15 @@ function Material() {
 
   const handleUpdate = async (values) => {
     setIsModalOpen(true);
-    setTitle("Update material");
+    setTitle("Update stone");
     form.setFieldsValue(values);
-    setMaterial(values);
+    setStone(values);
   };
 
   const handleSearch = async (value) => {
     console.log(value);
     try {
-      const response = await api.get(`/material/search?param=${value}`);
+      const response = await api.get(`/stone/search?param=${value}`);
       console.log(response.data);
       setData(response.data);
     } catch (e) {
@@ -67,14 +67,9 @@ function Material() {
       key: "id",
     },
     {
-      title: "Material Name",
+      title: "Stone Name",
       dataIndex: "name",
       key: "name",
-    },
-    {
-      title: "Weight",
-      dataIndex: "weight",
-      key: "weight",
     },
     {
       title: "Price",
@@ -115,8 +110,8 @@ function Material() {
   const showModal = () => {
     setIsModalOpen(true);
     form.resetFields();
-    setMaterial({});
-    setTitle("ADD NEW MATERIAL");
+    setStone({});
+    setTitle("ADD NEW STONE");
   };
   const handleOk = () => {
     setIsModalOpen(false);
@@ -126,21 +121,18 @@ function Material() {
   };
   const onFinish = async (values) => {
     console.log("Success:", values);
-    if (material.id == null) {
-      //call api add material
-      // values.price++;
-      const response = await api.post("/material", values);
+    if (stone.id == null) {
+      //call api add stone
+      const response = await api.post("/stone", values);
       // add xong -> render lai man hinh moi nhat thi state phai thay doi
       setData([...data, response.data]);
       setIsModalOpen(false);
       console.log(response);
     } else {
-      //call api update material
-      // values.price++;
-      const response = await api.put(`/material/${material.id}`, {
-        status: material.status,
+      //call api update stone
+      const response = await api.put(`/stone/${stone.id}`, {
+        status: stone.status,
         name: values.name,
-        weight: values.weight,
         price: values.price,
       });
 
@@ -152,7 +144,7 @@ function Material() {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  const validateMaterialName = async (rules, value) => {
+  const validateStoneName = async (rules, value) => {
     if (!value) {
       throw new Error("validate category name,please input again!!!");
     }
@@ -163,7 +155,7 @@ function Material() {
       <Row className="Modal-header" justify={"space-between"}>
         <Col>
           <Button type="primary" onClick={showModal}>
-            Add new material
+            Add new stone
           </Button>
         </Col>
 
@@ -206,45 +198,41 @@ function Material() {
           autoComplete="off"
         >
           <Form.Item
-            label="Material Name"
+            label="Stone Name"
             name="name"
             rules={[
               {
                 require: true,
-                message: "Please input material name!!!",
-                validator: validateMaterialName,
+                message: "Please input stone name!!!",
+                validator: validateStoneName,
               },
             ]}
           >
             <Input />
           </Form.Item>
 
-          <Form.Item
-            label="Weight"
-            name="weight"
-            rules={
-              material.id == null
-                ? [
-                    {
-                      require: true,
-                      message: "Please input weight of material!!!",
-                    },
-                  ]
-                : []
-            }
+          {/* <Form.Item
+            label="Price"
+            name="price"
+            rules={[
+              {
+                require: true,
+                message: "Please input price!!!",
+              },
+            ]}
           >
             <Input />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item
             label="Price"
             name="price"
             rules={
-              material.id == null
+              stone.id == null
                 ? [
                     {
                       require: true,
-                      message: "Please input weight of material!!!",
+                      message: "Please input price of stone!!!",
                     },
                   ]
                 : []
@@ -270,4 +258,4 @@ function Material() {
   );
 }
 
-export default Material;
+export default Stone;

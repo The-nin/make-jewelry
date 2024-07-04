@@ -1,0 +1,162 @@
+$button-padding: 10px;
+$button-background: rgba(0, 0, 0, 0.5);
+$button-color: white;
+$slider-transition-speed: 0.5s;
+
+.product-container {
+    text-align: center;
+    padding: 10px;
+
+    h2 {
+        font-size: 30px;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    h3 {
+        font-size: 25px;
+        margin-bottom: 20px;
+        color: rgb(169, 14, 138);
+
+        &.necklace-title {
+            margin-top: 30px; // Thêm khoảng cách phía trên tiêu đề "Dây Chuyền"
+        }
+    }
+
+    .additional-image {
+        margin: 20px auto 30px; // Căn giữa và thêm khoảng cách phía trên
+        width: calc(100% - 80px); // Đảm bảo độ rộng bằng với ảnh sản phẩm, trừ đi khoảng cách của các nút bấm
+        display: flex;
+        justify-content: center;
+
+        img {
+            width: 100%; // Đảm bảo hình ảnh chiếm toàn bộ chiều rộng
+            height: auto;
+        }
+    }
+
+    .slider {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 30px; // Khoảng cách phía dưới slider
+
+        &.necklace-slider {
+            margin-top: 30px; // Khoảng cách phía trên slider của phần Necklace
+        }
+
+        .product-list-wrapper {
+            overflow: hidden;
+            width: calc(100% - 80px); // Trừ chiều rộng của hai nút bấm
+            display: flex;
+            justify-content: center;
+
+            .product-list {
+                display: flex;
+                transition: transform $slider-transition-speed ease-in-out;
+                width: calc(100% * 2); // Đảm bảo thanh trượt đủ rộng để chứa tất cả sản phẩm
+            }
+
+            .product-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                flex: 0 0 calc(25% - 20px); // Đảm bảo các mục không co lại và căn đều
+                margin: 0 10px; // Khoảng cách giữa các mục
+
+                .product-image,
+                .product-name,
+                .product-contact {
+                    width: 100%;
+                    text-align: center;
+                    margin-bottom: 10px;
+                    overflow: visible;
+                }
+
+                .product-image {
+                    padding: 0;
+                    border-radius: 0;
+                    transition: transform 0.2s ease;
+
+                    &:hover {
+                        transform: scale(1.1);
+                    }
+
+                    img {
+                        max-width: 100%;
+                        height: auto;
+                    }
+                }
+
+                .product-name {
+                    padding: 10px;
+                    border: none;
+
+                    h4 {
+                        font-size: 16px;
+                        margin: 0;
+                    }
+                }
+
+                .product-contact {
+                    p {
+                        font-size: 16px;
+                        color: #f7800a;
+                        margin: 5px 0 0; // Khoảng cách giữa tên sản phẩm và chữ "Liên hệ"
+                    }
+                }
+            }
+        }
+
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: $button-background;
+            color: $button-color;
+            border: none;
+            padding: $button-padding;
+            cursor: pointer;
+            z-index: 1;
+
+            &.disabled {
+                visibility: hidden;
+                opacity: 0; /* Làm cho nút không hiển thị */
+                cursor: not-allowed;
+            }
+
+            &.left {
+                left: 0;
+            }
+
+            &.right {
+                right: 0;
+            }
+        }
+    }
+
+    .additional-image {
+        margin: 20px auto 0; // Center and add space above
+        width: calc(100% - 80px); // Ensure width matches product image, subtract button spacing
+
+        img {
+            width: 100%; // Ensure image fills container
+            height: auto;
+        }
+    }
+
+    h2 {
+        font-size: 30px;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    h3 {
+        font-size: 25px;
+        margin-bottom: 20px;
+        color: rgb(169, 14, 138);
+    }
+}

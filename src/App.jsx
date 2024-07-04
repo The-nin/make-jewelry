@@ -13,6 +13,17 @@ import Material from "./Material";
 import AllAccount from "./components/AllAccount";
 import HomePage from "./pages/HomePage";
 import Product_template from "./Product";
+import Order from "./pages/Dashboard/Order";
+import Stone from "./pages/Dashboard/Stone";
+import ListOfOrder from "./pages/Dashboard/ListOfOrder";
+import Collection from "./pages/CollectionPage/Collection";
+import ProductDetail from "./pages/productdetail";
+import RequestProduct from "./pages/requestProduct";
+import OrderApproval from "./pages/Dashboard/OrderApproval";
+import TaskStaff from "./pages/Dashboard/TaskStaff";
+import MyOrder from "./pages/MyOrder";
+import Cart from "./pages/CartPage/Cart";
+// import Profile from "./pages/Profile";
 
 function App() {
   const router = createBrowserRouter([
@@ -20,6 +31,7 @@ function App() {
       path: "/",
       element: <HomePage />,
     },
+
     {
       path: "/login",
       element: <Test />,
@@ -37,11 +49,35 @@ function App() {
       element: <ChangePassword />,
     },
     {
+      path: "/collections",
+      element: <Collection />,
+    },
+    {
+      path: "/product/:id",
+      element: <ProductDetail />,
+    },
+    {
+      path: "/booking",
+      element: <RequestProduct />,
+    },
+    {
+      path: "my-order",
+      element: <MyOrder />,
+    },
+    {
+      path: "cart",
+      element: <Cart />,
+    },
+    // {
+    //   path: "profile",
+    //   element: <Profile />,
+    // },
+    {
       path: "/dashboard",
       element: <Dashboard />,
       children: [
         {
-          path: "/dashboard/category",
+          path: "category",
           element: <Category />,
         },
         // {
@@ -49,16 +85,36 @@ function App() {
         //   element: <Account />,
         // },
         {
-          path: "/dashboard/product",
+          path: "product",
           element: <Product_template />,
         },
         {
-          path: "/dashboard/material",
+          path: "material",
           element: <Material />,
         },
         {
-          path: "/dashboard/all-account",
+          path: "all-account",
           element: <AllAccount />,
+        },
+        {
+          path: "stone",
+          element: <Stone />,
+        },
+        {
+          path: "all-order",
+          element: <Order />,
+        },
+        {
+          path: "assign-order",
+          element: <ListOfOrder />,
+        },
+        {
+          path: "approve-order",
+          element: <OrderApproval />,
+        },
+        {
+          path: "staff-task",
+          element: <TaskStaff />,
         },
       ],
     },

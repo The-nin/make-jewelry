@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Row } from "antd";
+import { Button, Col, Divider, Form, Input, Row } from "antd";
 import {
   GoogleAuthProvider,
   // signInWithCustomToken,
@@ -9,9 +9,9 @@ import "./index2.scss";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../config/axios";
 import { toast } from "react-toastify";
-import { LockOutlined, PhoneOutlined } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
-import { login, logout } from "../redux/features/counterSlice";
+import { HomeOutlined, LockOutlined, PhoneOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { login, logout, selectUser } from "../redux/features/counterSlice";
 
 // import { useDispatch, useSelector } from "react-redux";
 // import { selectUser } from "../redux/features/counterSlice";
@@ -19,6 +19,7 @@ import { login, logout } from "../redux/features/counterSlice";
 
 function Test() {
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   const handleLoginGoogle = async () => {
     const result = await signInWithPopup(auth, new GoogleAuthProvider());
@@ -51,76 +52,46 @@ function Test() {
   const navigate = useNavigate();
   async function handleLogin(values) {
     console.log(values);
+    // try {
+    //   console.log(values);
+    //   const response = await api.post("/login", values);
+    //   console.log(response.data);
+    //   dispatch(login(response.data));
+    //   localStorage.setItem("token", response.data.token);
+    //   toast.success("Login successfully");
+    //   navigate("/");
+    // } catch (error) {
+    //   toast.error(error.response.data);
+    // }
     try {
-      console.log(values);
-      const response = await api.post("/login", values);
-      console.log(response.data);
-      dispatch(login(response.data));
-      localStorage.setItem("token", response.data.token);
-      toast.success("Login successfully");
-      navigate("/");
+      const response = await api.post("/login", values).then((userApi) => {
+        // console.log(response);
+        console.log(userApi);
+        console.log(userApi.data);
+        localStorage.setItem("token", userApi.data.token);
+        dispatch(login(userApi.data));
+        if (userApi.data.role === "CUSTOMER") {
+          navigate("/");
+        } else if (userApi.data.role === "ADMIN") {
+          navigate("/dashboard");
+        } else if (userApi.data.role === "MANAGER") {
+          navigate("/dashboard");
+        } else if (userApi.data.role === "SELLER") {
+          navigate("/dashboard");
+        } else if (userApi.data.role === "DESIGNER") {
+          navigate("/dashboard");
+        } else if (userApi.data.role === "MAKER_PRODUCT") {
+          navigate("/dashboard");
+        }
+        console.log(user.fullname);
+        toast.success("Login successfully");
+      });
     } catch (error) {
       toast.error(error.response.data);
     }
   }
+
   return (
-    //   <div className="background">
-    //     <Row className="login">
-    //       <Col span={16} className="login__background">
-    //         <img
-    //           src="https://media.cnn.com/api/v1/images/stellar/prod/230515143657-0707.jpg?q=w_1480,c_fill/f_webp"
-    //           alt=""
-    //         />
-    //       </Col>
-    //       <Col span={8} className="login__wrapper">
-    //         <div>
-    //           <Form
-    //             className="login__form"
-    //             labelCol={{
-    //               span: 24,
-    //             }}
-    //             onFinish={handleLogin}
-    //           >
-    //             <h1 className="header">Sign in</h1>
-    //             <Form.Item name="phone">
-    //               <Input placeholder="Username" />
-    //             </Form.Item>
-
-    //             <Form.Item name="password">
-    //               <Input.Password
-    //                 placeholder="Password"
-    //                 required
-    //               ></Input.Password>
-    //             </Form.Item>
-    //             <div>
-    //               <a href="/ForgotPassword">Forgot password?</a>
-    //             </div>
-    //             <div className="button">
-    //               <Button
-    //                 htmlType="submit"
-    //                 type="primary"
-    //                 style={{ marginRight: "10px" }}
-    //               >
-    //                 Login
-    //               </Button>
-    //               <Button type="primary">Sign up</Button>
-    //             </div>
-    //           </Form>
-    //           <br />
-    //           <button className="login__google" onClick={handleLoginGoogle}>
-    //             <img
-    //               src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png"
-    //               alt=""
-    //               width={28}
-    //             />
-    //             <p className="text">Login with Google</p>
-    //           </button>
-    //         </div>
-    //       </Col>
-    //     </Row>
-    //   </div>
-    // );
-
     <div className="background">
       <Row className="login">
         <Col span={14} className="login__background">
@@ -129,8 +100,14 @@ function Test() {
             alt=""
           />
         </Col>
+
         <Col span={8} className="login__wrapper">
           <div>
+            <Link to={"/"} className="backToHome">
+              <i className="icon">
+                <HomeOutlined />
+              </i>
+            </Link>
             <Form
               className="login__form"
               labelCol={{
@@ -151,7 +128,9 @@ function Test() {
                 ></Input.Password>
               </Form.Item>
 
-              <Link to="/forgot-password">Forgot password?</Link>
+              <Link className="forgotpass" to="/forgot-password">
+                Forgot password?
+              </Link>
 
               <div className="button">
                 <Button

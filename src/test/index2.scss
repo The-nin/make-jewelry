@@ -53,13 +53,21 @@
         align-items: center;
         gap: 9px;
         width: 100%;
-        margin-top: 30px;
+        // margin-top: 30px;
         color: rgb(34, 32, 32);
         box-shadow: none;  
         background: none;
     }
     .button{
         display: flex; 
+    }
+    .backToHome{
+        color: black;
+        float: right;
+    }
+    .forgotpass{
+        display: flex;
+        justify-content: center;
     }
 }
 .background{
